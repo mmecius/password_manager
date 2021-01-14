@@ -1,13 +1,21 @@
 from tkinter import *
+from tkinter import messagebox
 
 
-def add_to_file():
+def save():
+
     website = website_entry_field.get()
     username = username_password_entry.get()
     password = password_entry.get()
-    with open("data.txt", mode="a") as data_file:
-        data_file.write(f"{website} | {username} | {password}\n")
-        delete_data()
+
+    if len(website) == 0 or len(password) == 0:
+        messagebox.showinfo(title="Ooops", message="Please don't leave any fields empty!")
+    else:
+        is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered:\nEmail: {username} \nPassword: {password} \nIs it ok to save?")
+        if is_ok:
+            with open("data.txt", mode="a") as data_file:
+                data_file.write(f"{website} | {username} | {password}\n")
+                delete_data()
 
 
 def delete_data():
@@ -33,7 +41,7 @@ username_password_entry = Entry(width=21)
 password_entry = Entry(width=35)
 
 generate_button = Button(text="Generate Password")
-add_button = Button(text="Add", width=35, command=add_to_file)
+add_button = Button(text="Add", width=35, command=save)
 
 website_label.grid(column=0, row=3)
 username_email_label.grid(column=0, row=4)
